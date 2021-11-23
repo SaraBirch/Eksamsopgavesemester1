@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<body>
+			<h1>Start</h1>
+                <button id="updateuser" >Update User</button>
+                <button id="deleteuser" >Delete User</button>
+                <button id="adduser" >Add User</button>
+                <button id="logout" >Log out</button>
+    
+                <button id="updateproduct" >Update Product</button>
+                <button id="deleteproduct">Delete Product</button>
+                <button id="addproduct">Add Product</button>
+                <button id="productsforsale" onclick="productsforsale()">Products for sale</button>
+
+
+            </head>
+		</div>
+	</body>
+</html>
+
+<script type="text/javascript">
+    document.getElementById("updateuser").onclick = function () {
+        location.href = "/updateuser";
+    };
+    document.getElementById("deleteuser").onclick = function () {
+        location.href = "/deleteuser";
+    };
+    document.getElementById("adduser").onclick = function () {
+        location.href = "/createuser";
+    };
+    document.getElementById("logout").onclick = function () {
+        location.href = "/logoutuser";
+    };
+    document.getElementById("updateproduct").onclick = function () {
+        location.href = "/updateproduct";
+    };
+    document.getElementById("deleteproduct").onclick = function () {
+        location.href = "/deleteproduct";
+    };
+    document.getElementById("addproduct").onclick = function () {
+        location.href = "/createproduct";
+    };
+    document.getElementById("productsforsale").onclick = function () {
+        location.href = "/productsforsale";
+    };
+</script>
