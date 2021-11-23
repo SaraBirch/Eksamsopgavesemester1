@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velkommen</title>
+    <!-- Dette er forsiden -->
+
+</head>
+<body>
+    
+    <h1>Welkommen</h1>
+    <button id='login'>Login</button> <!--knappen til login-->
+    <button id='newuser'>Create new user</button> <!--knappen til new user-->
+</body>
+</html>
+
+<script type="text/javascript"> 
+    document.getElementById("login").onclick = function () { 
+        location.href = "login";
+    }; 
+    document.getElementById("newuser").onclick = function () {
+        location.href = "createuser";
+    };
+</script>
+
+<!--getElementById method returns the element that has the ID attribute with the specified value.-->
+<!--når vi trykker på kappen, så -->
