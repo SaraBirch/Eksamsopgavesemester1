@@ -73,25 +73,29 @@ app.post('/authenticate', function(request, response) { //trykker på html knapp
 });
 
 app.post('/saveuser', function(request, response) {
-	var name = request.body.name
-	var username = request.body.username;
-	var password = request.body.password;
-	
-	if (username && password && name) 
-	{
-		let userobj = new Object()
-		userobj.name = name;
-		userobj.username = username;
-		userobj.password = password;
-		database.writeuserdata(userobj); //konventere objekt intil en .json for at serven gennem 
-		response.send('User created!!');
-		response.end();
-	} 
-	else 
-	{
-		response.send('Please enter Name, Username and Password!');
-		response.end();
-	}
+	if (request.session.loggedin) {
+		var name = request.body.name
+		var username = request.body.username;
+		var password = request.body.password;
+		
+		if (username && password && name) 
+		{
+			let userobj = new Object()
+			userobj.name = name;
+			userobj.username = username;
+			userobj.password = password;
+			database.writeuserdata(userobj); //konventere objekt intil en .json for at serven gennem 
+			response.send('User created!!');
+			response.end();
+		} 
+		else 
+		{
+			response.send('Please enter Name, Username and Password!');
+			response.end();
+		} 
+	} else {
+			response.send('Please login to view this page!');
+		}
 });
 
 app.get('/logoutuser', function(request, response) {
@@ -100,18 +104,5 @@ app.get('/logoutuser', function(request, response) {
 });
 
 
-/* What happens here is we first create the POST request in our script, our login form action is to: auth so we need to use that here, after, we create two variables, one for the username and one for the password, we then check to see if the username and password exist, if they are we query our MySQL table: accounts and check to see if the details exist in the table.
-If the result returned from the table exists we create two session variables, one to determine if the client is logged in and the other will be their username.
-If no results are returned we send to the client an error message, this message will let the client know they've entered the wrong details.
-If everything went as expected and the client logs in they will be redirected to the home page. */
 
-//The home page we can handle with another GET request:
-app.get('/home', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.username + '!');
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
-});
-
+// update user, deleteuser, 
