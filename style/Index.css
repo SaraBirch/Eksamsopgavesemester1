@@ -1,0 +1,39 @@
+.login {
+    width: 400px;
+	margin: 0 auto;
+	font-family: Tahoma, Geneva, sans-serif;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 50px;
+}
+
+.newuser {
+    width: 400px;
+	margin: 0 auto;
+	font-family: Tahoma, Geneva, sans-serif;
+    display: flex;
+    flex-direction: column-reverse;
+
+}
+
+h1 {
+    color: rgb(115, 182, 146);
+    text-align: center;
+    font-size: 55px;
+    font-family: Tahoma, Geneva, sans-serif;
+    background-color: rgb(240, 218, 190);
+    
+
+
+}
+
+button {
+    padding: 30px;
+    width: 400px;
+	margin: 0 auto;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 18px;
+    background-color: rgb(235, 213, 186);
+    border: 3px solid #fdfdfd
+  
+}

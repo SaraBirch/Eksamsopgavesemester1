@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../style/updateuser.css"> 
     <title>Document</title>
+    
+
 </head>
-<body>
+<body style="background-color:rgb(185, 240, 199);">
     <div class="Update User-form">
-        <h1>Update user Form</h1>
+        <h1>Here you can update your username and password</h1>
         <form action="saveuser" method="POST">
             <input type="text" name="name" placeholder="Navn" required value="<%= name %>"> 
             <input type="password" name="password" placeholder="Password" required value="<%= password %>">
