@@ -1,0 +1,60 @@
+</head>
+<body>
+    <div class="container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Product #</th>
+              <th>Product Name</th>
+              <th>Product Picture</th>
+              <th>Product Category</th>
+            </tr>
+          </thead>
+          <tbody id="data">
+          </tbody>
+        </table>
+      </div>
+    <div>
+    <button  id="myButton">Se product</button><br><br>
+</div>
+<div>
+    <input id="value" type="text" name="Product number" placeholder="Product number to delete" required>  <br>  
+    <button id="deleteproduct">Delete product</button>
+</div>
+</body>
+</html>
+
+<script>
+    document.getElementById("deleteproduct").onclick = function () {
+        var dist = document.getElementById('value').value; // change here
+        if (dist != "") {
+            location.href = "/deleteproductnumber?value=" + dist;
+        } else
+            alert('Please specify number');
+    }
+
+    console.log('client side code running');
+    const button = document.getElementById('myButton');
+    button.addEventListener('click', function(e){
+        fetch('http://localhost:4000/getallproducts', {method : 'GET'})
+        .then((response) => response.json())
+        .then((data) => {
+            var table = document.getElementById('data');
+            var index = 1;
+            for (let product of Object.values(data))
+            {
+                const row = table.insertRow();
+                const id = row.insertCell(0)
+                const title = row.insertCell(1);
+                const picture = row.insertCell(2);
+                const category = row.insertCell(3);
+                id.innerHTML = index++;
+                title.innerHTML = product.productname;
+                picture.innerHTML = product.productpicture;
+                category.innerHTML = product.productcategory;
+            }
+            console.log(data);
+        })
+    .catch(error => console.warn(error));
+    })
+</script>

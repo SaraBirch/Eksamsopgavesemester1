@@ -21,6 +21,23 @@ function _writeuserdata(userobj) { // denne funktion konventere et objekt til .j
         console.log('Data written to file');
     });
 }
+
+function _writeproductdata(productlist) {
+    var ts = JSON.stringify(productlist, null, 4);
+    fs.writeFileSync(product_path, ts, function(err) {
+        if (err) throw  err;
+      }
+    );
+}
+
+function _readproductlist() {
+    var fileString = fs.readFileSync(product_path).toString();
+    var content = JSON.parse(fileString);
+    console.log(content)
+    return content;
+}
+
+
 // jeg ekportere disse funktioner, til andre js filer brug
 module.exports = {
     checkuserandpassword: function checkuserandpassword(username, password){
@@ -36,7 +53,22 @@ module.exports = {
     },
 
     readuserdata : function readuserdata(userobj) {
-        return _readuserdata(userobj);
-    }    
+        return _readuserdata(userobj);  
+
+},
+
+readproducts : function readproducts() {
+    return _readproductlist()
+},
+
+deleteuser : function deleteuser()
+{
+    try {
+        fs.unlinkSync(user_path)
+        //file removed
+      } catch(err) {
+        console.error(err)
+      }
+}
 
 };
