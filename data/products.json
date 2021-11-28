@@ -1,0 +1,17 @@
+[
+    {
+        "productname": "Stole",
+        "productpicture": "app.js",
+        "productcategory": "aaa"
+    },
+    {
+        "productname": "Cykle",
+        "productpicture": "app.js",
+        "productcategory": ""
+    },
+    {
+        "productname": "dddd",
+        "productpicture": "app.js",
+        "productcategory": "b"
+    }
+]

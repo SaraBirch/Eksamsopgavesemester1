@@ -10,13 +10,19 @@
 
 </head>
 <body style="background-color:rgb(185, 240, 199);">
-    <div class="Update User-form">
-        <h1>Here you can update your username and password</h1>
+        <h1>Update your accout</h1>
+		<div class="UpdateUser-form"></div>
         <form action="saveuser" method="POST">
-            <input type="text" name="name" placeholder="Navn" required value="<%= name %>"> 
-            <input type="password" name="password" placeholder="Password" required value="<%= password %>">
-            <input type="text" name="username" placeholder="Username" required value="<%= username %>">
-            <input type="submit" name = "Update">
+           <div class ="name1">
+			<input type="text" name="name" placeholder="Navn" required value="<%= name %>"> 
+		</div>
+		<div class="password1">
+			<input type="password" name="password" placeholder="Password" required value="<%= password %>">
+        </div>
+		<div class="username1">
+			<input type="text" name="username" placeholder="Username" required value="<%= username %>">
+		</div>
+			<input type="submit" name = "Update">
         </form>
     </div>
 </body>

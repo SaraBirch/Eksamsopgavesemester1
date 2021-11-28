@@ -46,6 +46,14 @@ app.get('/updateuser', function(request, response) {
 	response.render(path.join(__dirname + '/views/updateuser.html'), {name : userobj.name, username: userobj.username, password : userobj.password})
 });
 
+app.get('/deleteuser', function(request, response) {
+	if (request.session.loggedin) {
+		database.deleteuser();
+		response.sendFile(path.join(__dirname + '/views/index.html'));
+	} else {
+		response.send('Please login to view this page!');
+	}	
+});
 // 
 
 //When the client connects to the server the login page will be displayed, the server will send the login.html file. 
@@ -117,5 +125,6 @@ app.get('/home', function(request, response) {
 	}
 	response.end();
 });
+
 
 // update user, deleteuser, 
