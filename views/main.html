@@ -2,16 +2,16 @@
 <html>
 	<head>
 	<body>
-			<h1>Velkommen tilbage - stedet hvor gammle ting finder et nyt hjem</h1>
+			<h1>Start</h1>
                 <button id="adduser" >Add User</button>
                 <button id="updateuser" >Update User</button>
                 <button id="deleteuser" >Delete User</button>
-                <button id="logout" >Log out</button>
-    
+                <button id="addproduct">Add Product</button>
                 <button id="updateproduct" >Update Product</button>
                 <button id="deleteproduct">Delete Product</button>
-                <button id="addproduct">Add Product</button>
-                <button id="productsforsale" onclick="productsforsale()">Products for sale</button>
+                <button id="productsbycategory">Products by categoryt</button>
+                <button id="productsforsale">Products for sale</button>
+                <button id="logout" >Log out</button>
 
 
             </head>
@@ -33,15 +33,18 @@
         location.href = "/logoutuser";
     };
     document.getElementById("updateproduct").onclick = function () {
-        location.href = "/updateproduct";
+        location.href = "/views/updateproduct.html";
     };
     document.getElementById("deleteproduct").onclick = function () {
-        location.href = "/deleteproduct";
+        location.href = "/views/deleteproduct.html";
     };
     document.getElementById("addproduct").onclick = function () {
         location.href = "/createproduct";
     };
+    document.getElementById("productsbycategory").onclick = function () {
+        location.href = "/views/productsbycategory.html";
+    };
     document.getElementById("productsforsale").onclick = function () {
-        location.href = "/productsforsale";
+        location.href = "/views/productsforsale.html";
     };
 </script>

@@ -1,22 +1,20 @@
 'use strict';
 
-const fs = require('fs') // file stream  
-const path = require('path') // en standard funktion 
+const fs = require('fs')
+const path = require('path')
+const product_path = path.join(__dirname + '/data/products.json') 
+const user_path = path.join(__dirname + '/data/users.json');
 
-//krearet en funktion, sætter en varibale til at pege på bibliotek dataen,  
 function _readuserdata() {
-    let filename = path.join(__dirname + '/data/users.json') 
-    let data =  fs.readFileSync(filename) // læser filen, .json (normalt ville man køre database)
-    let userobj = JSON.parse(data); //konvetere file format til json format (google dette)
-    console.log(userobj) //userobj er blevet knovetere fra .json dataen
-    return userobj; // return, stopper funktion 
+    let data =  fs.readFileSync(user_path)
+    let userobj = JSON.parse(data);
+    console.log(userobj)
+    return userobj;
 }
-// når man vil bruge dataen til at logge ind konventere man det fra en .json til en objekt
-// ligeledes når man vil gemme dataen, koventere man det tilbage til et .json format
-// denne process udarbejder vi fordi vi ikke bruger en database
-function _writeuserdata(userobj) { // denne funktion konventere et objekt til .json format 
-    let data = JSON.stringify(userobj, null, 2); 
-    fs.writeFile(path.join(__dirname + '/data/users.json'), data, (err) => {
+
+function _writeuserdata(userobj) {
+    let data = JSON.stringify(userobj, null, 2);
+    fs.appendFile(user_path, data, (err) => {
         if (err) throw err;
         console.log('Data written to file');
     });
@@ -37,8 +35,6 @@ function _readproductlist() {
     return content;
 }
 
-
-// jeg ekportere disse funktioner, til andre js filer brug
 module.exports = {
     checkuserandpassword: function checkuserandpassword(username, password){
         let userobj = _readuserdata()
@@ -52,23 +48,21 @@ module.exports = {
         _writeuserdata(userobj);
     },
 
-    readuserdata : function readuserdata(userobj) {
-        return _readuserdata(userobj);  
+    writeproductdata : function writeproducts(productlist) {
+        _writeproductdata(productlist);
+    },  
 
-},
+    readproducts : function readproducts() {
+        return _readproductlist()
+    },
 
-readproducts : function readproducts() {
-    return _readproductlist()
-},
-
-deleteuser : function deleteuser()
-{
-    try {
-        fs.unlinkSync(user_path)
-        //file removed
-      } catch(err) {
-        console.error(err)
-      }
-}
-
+    deleteuser : function deleteuser()
+    {
+        try {
+            fs.unlinkSync(user_path)
+            //file removed
+          } catch(err) {
+            console.error(err)
+          }
+    }
 };

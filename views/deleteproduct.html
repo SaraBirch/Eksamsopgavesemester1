@@ -1,3 +1,4 @@
+
 </head>
 <body>
     <div class="container">
@@ -36,7 +37,7 @@
     console.log('client side code running');
     const button = document.getElementById('myButton');
     button.addEventListener('click', function(e){
-        fetch('http://localhost:4000/getallproducts', {method : 'GET'})
+        fetch('http://localhost:3000/getallproducts', {method : 'GET'})
         .then((response) => response.json())
         .then((data) => {
             var table = document.getElementById('data');
@@ -58,3 +59,4 @@
     .catch(error => console.warn(error));
     })
 </script>
+

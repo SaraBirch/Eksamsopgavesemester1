@@ -8,7 +8,7 @@ const { writeproductdata } = require('./database');
 const database = require('./database');
 
 var app = express();
-var PORT = 4000;
+var PORT = 3000;
 var productlist = [];
 // We now need to let Express know we'll be using some of its packages:
 
@@ -29,6 +29,8 @@ function saveproduct(request) {
 	}
 	return bSuccess
 }
+
+
 app.use(session({
 	secret: 'secret',
 	resave: true,
@@ -51,24 +53,13 @@ app.listen(PORT, function(err){
 
 //the sessions package is what we'll use to determine if the user is logged-in, the bodyParser package will extract the form data from our login.html file.
 // We now need to display our login.html file to the client:
-// forside 
+
 app.get('/', function(request, response) {
-	response.sendFile(path.join(__dirname + '/views/index.html')); //path.join method joins the specified path segments into one path.
+	response.sendFile(path.join(__dirname + '/views/index.html'));
 });
 
 app.get('/createuser', function(request, response) {
-	response.sendFile(path.join(__dirname + '/views/createuser.html')); //når vi trykker på knappe i main.html, kalder den createuser entry point, og redirkter til create.html
-});
-
-// når vi klikker på knappen er det denne funktion som "virker", og for at logge ind sender den os til login.html" 
-app.get('/login', function(request, response) {
-	response.sendFile(path.join(__dirname + '/views/login.html'));
-});
-
-app.get('/updateuser', function(request, response) {
-	let userobj = database.readuserdata();
-
-	response.render(path.join(__dirname + '/views/updateuser.html'), {name : userobj.name, username: userobj.username, password : userobj.password})
+	response.sendFile(path.join(__dirname + '/views/createuser.html'));
 });
 
 app.get('/deleteuser', function(request, response) {
@@ -92,7 +83,6 @@ app.get('/updateuser', function(request, response) {
 		response.send('Please login to view this page!');
 	}	
 });
-
 
 app.get('/createproduct', function(request, response) {
 	if (request.session.loggedin) {
@@ -131,6 +121,8 @@ app.get('/showcategory', function(request, response) {
 	response.send(filterlist);
 });
 
+
+
 // 
 
 //When the client connects to the server the login page will be displayed, the server will send the login.html file. 
@@ -139,28 +131,28 @@ app.get('/showcategory', function(request, response) {
 //form data will be sent to the server, and with that data our login script will 
 //check in our file to see if the details are correct.
 
-app.post('/authenticate', function(request, response) { //trykker på html knappen sender den data til auth
-	var username = request.body.username;
-	var password = request.body.password;
-	if (username && password) 
-	{
-		if (database.checkuserandpassword(username, password)) 
+app.post('/authenticate', function(request, response) {
+		var username = request.body.username;
+		var password = request.body.password;
+		if (username && password) 
 		{
-			request.session.loggedin = true;
-			request.session.username = username;
-			response.redirect('/views/main.html'); //hvis det er rigtig login, bliver vi sendt til main html siden
+			if (database.checkuserandpassword(username, password)) 
+			{
+				request.session.loggedin = true;
+				request.session.username = username;
+				response.redirect('/views/main.html');
+			} 
+			else 
+			{
+				response.send('Incorrect Username and/or Password!');
+			}			
+			response.end();
 		} 
 		else 
 		{
-			response.send('Incorrect Username and/or Password!'); 
-		}			
-		response.end();
-	} 
-	else 
-	{
-		response.send('Please enter Username and Password!'); //hvis ikke intagstet noget 
-		response.end();
-	}
+			response.send('Please enter Username and Password!');
+			response.end();
+		}
 });
 
 app.post('/updateproductwithid', function(request, response) {
@@ -176,7 +168,7 @@ app.post('/updateproductwithid', function(request, response) {
 	} else {
 		response.sendFile(path.join(__dirname + '/views/login.html'));
 	}
-});
+});	
 
 app.post('/saveuser', function(request, response) {
 	if (request.session.loggedin) {
@@ -190,7 +182,7 @@ app.post('/saveuser', function(request, response) {
 			userobj.name = name;
 			userobj.username = username;
 			userobj.password = password;
-			database.writeuserdata(userobj); //konventere objekt intil en .json for at serven gennem 
+			database.writeuserdata(userobj);
 			response.send('User created!!');
 			response.end();
 		} 
@@ -198,16 +190,17 @@ app.post('/saveuser', function(request, response) {
 		{
 			response.send('Please enter Name, Username and Password!');
 			response.end();
-		} 
-	} else {
-			response.send('Please login to view this page!');
 		}
+	} else {
+		response.send('Please login to view this page!');
+	}	
 });
 
-app.get('/logoutuser', function(request, response) {
+app.post('/logoutuser', function(request, response) {
 	request.session.destroy();
 	response.sendFile(path.join(__dirname + '/views/index.html'));
 });
+
 
 app.post('/saveproduct', function(request, response) {
 	if (request.session.loggedin) {
@@ -223,14 +216,4 @@ app.post('/saveproduct', function(request, response) {
 	}
 });	
 
-app.get('/home', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.username + '!');
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
-});
 
-
-// update user, deleteuser, 

@@ -1,17 +1,40 @@
 [
     {
-        "productname": "Stole",
+        "productname": "Mountain bike",
         "productpicture": "app.js",
-        "productcategory": "aaa"
+        "productcategory": "Bikes",
+        "price": 400
     },
     {
-        "productname": "Cykle",
+        "productname":"Women bike",
         "productpicture": "app.js",
-        "productcategory": ""
+        "productcategory": "Bikes",
+        "price": 400
+
     },
     {
-        "productname": "dddd",
+        "productname": "Sofa",
         "productpicture": "app.js",
-        "productcategory": "b"
+        "productcategory": "Furnitures",
+        "price": 400
+
+    },
+    {
+        "productname": "Sofatable",
+        "productpicture": "app.js",
+        "productcategory": "Furnitures",
+        "price": 400
+    },
+    {
+        "productname": "Plant",
+        "productpicture": "app.js",
+        "productcategory": "Miscellaneous",
+        "price": 400
+    },
+    {
+        "productname": "Christmas lights",
+        "productpicture": "app.js",
+        "productcategory": "Miscellaneous",
+        "price": 400
     }
 ]
