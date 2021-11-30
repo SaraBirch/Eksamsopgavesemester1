@@ -13,18 +13,19 @@ var productlist = [];
 // We now need to let Express know we'll be using some of its packages:
 
 function saveproduct(request) {
-	const bSuccess = false
+	var bSuccess = false
 	var productpicture = request.query.productpicture;
-	var index = request.query.index;
 	var productname = request.query.productname
 	var productcategory = request.query.productcategory;
-	if (productcategory && productname && productpicture) {
+	var productprice = request.query.productprice;
+
+	if (productcategory && productname && productpicture && productprice) {
 		let productobj = new Object();
 		productobj.productname = productname;
 		productobj.productpicture = productpicture;
 		productobj.productcategory = productcategory;
+		productobj.productprice = productprice;
 		productlist.push(productobj);
-		database.writeproductdata(productlist);
 		bSuccess = true;
 	}
 	return bSuccess
@@ -32,7 +33,7 @@ function saveproduct(request) {
 
 
 app.use(session({
-	secret: 'secret',
+	secret: 'de!"hh87€#!"787654',
 	resave: true,
 	saveUninitialized: true
 }));
@@ -44,7 +45,6 @@ app.engine('.html', require('ejs').renderFile);
 
 //serving public file
 app.use(express.static(__dirname));
-
 
 app.listen(PORT, function(err){
 	if (err) console.log(err);
@@ -58,21 +58,13 @@ app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/views/index.html'));
 });
 
-app.get('/createuser', function(request, response) {
-	response.sendFile(path.join(__dirname + '/views/createuser.html'));
-});
-
 app.get('/deleteuser', function(request, response) {
 	if (request.session.loggedin) {
 		database.deleteuser();
 		response.sendFile(path.join(__dirname + '/views/index.html'));
 	} else {
-		response.send('Please login to view this page!');
+		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
 	}	
-});
-
-app.get('/login', function(request, response) {
-	response.sendFile(path.join(__dirname + '/views/login.html'));
 });
 
 app.get('/updateuser', function(request, response) {
@@ -80,48 +72,79 @@ app.get('/updateuser', function(request, response) {
 		let userobj = database.readuserdata();
 		response.render(path.join(__dirname + '/views/updateuser.html'), {name : userobj.name, username: userobj.username, password : userobj.password})
 	} else {
-		response.send('Please login to view this page!');
+		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
 	}	
 });
+
 
 app.get('/createproduct', function(request, response) {
 	if (request.session.loggedin) {
 		response.sendFile(path.join(__dirname + '/views/createproduct.html'));
 	} else {
-		response.send('Please login to view this page!');
+		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
 	}	
 });
 
 
 app.get('/getallproducts', function(request, response) {
-	productlist = database.readproducts();
-	response.send(productlist);
+	if (request.session.loggedin) {
+		productlist = database.readproducts();
+		response.send(productlist);
+	} else {
+		response.sendFile(path.join(__dirname + '/views/index.html'));
+	}	
 });
 
-
 app.get('/deleteproductnumber', function(request, response) {
-	let number = request.query.value;
-	productlist.splice(parseInt(number)-1,1);
-	writeproductdata(productlist);
-	response.sendFile(path.join(__dirname + '/views/deleteproduct.html'));
+	if (request.session.loggedin) {
+		let number = request.query.value;
+		productlist.splice(parseInt(number)-1,1);
+		writeproductdata(productlist);
+		response.sendFile(path.join(__dirname + '/views/deleteproduct.html'));
+	} else {
+		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
+	}	
 });
 
 app.get('/updateproductdetail', function(request, response) {
-	let number = request.query.value;
-	response.send(productlist[parseInt(number-1)])
+	if (request.session.loggedin) {
+		let number = request.query.value;
+		response.send(productlist[parseInt(number-1)])
+	} else {
+		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
+	}	
 });
+
+app.get('/getcategorylist', function(request, response) {
+	if (request.session.loggedin) {
+		if (productlist.length == 0) { productlist = database.readproducts()}
+
+		var categorylist = productlist.map(function(a) {return a.category;});
+		response.send(categorylist);
+	} else {
+		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
+	}
+})
 
 app.get('/showcategory', function(request, response) {
-	let category = request.query.value;
-	if (productlist.length == 0) { productlist = database.readproducts()}
-	
-	let filterlist = productlist.filter( x => //x = værdi
-		x.productcategory == category
-	);
-	response.send(filterlist);
+	if (request.session.loggedin) {
+		let category = request.query.value;
+		if (productlist.length == 0) { productlist = database.readproducts()}
+		
+		let filterlist = productlist.filter( x => //x = værdi
+			x.productcategory == category
+		);
+		response.send(filterlist);
+	} else {
+		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
+	}	
 });
 
 
+app.get('/logoutuser', function(request, response) {
+	request.session.destroy();
+	response.sendFile(path.join(__dirname + '/views/index.html'));
+});
 
 // 
 
@@ -159,7 +182,8 @@ app.post('/updateproductwithid', function(request, response) {
 	if (request.session.loggedin) {
 		if (saveproduct(request)) {
 			var index = request.query.index;
-			productlist.splice(nIndex - 1, 1)
+			productlist.splice(parseInt(index)-1, 1)
+			database.writeproductdata(productlist);
 			response.sendFile(path.join(__dirname + '/views/updateproduct.html'));
 		} else {
 			response.send('Please enter Procduct Name, Product Category and Picture!');
@@ -171,44 +195,35 @@ app.post('/updateproductwithid', function(request, response) {
 });	
 
 app.post('/saveuser', function(request, response) {
-	if (request.session.loggedin) {
-		var name = request.body.name
-		var username = request.body.username;
-		var password = request.body.password;
-		
-		if (username && password && name) 
-		{
-			let userobj = new Object()
-			userobj.name = name;
-			userobj.username = username;
-			userobj.password = password;
-			database.writeuserdata(userobj);
-			response.send('User created!!');
-			response.end();
-		} 
-		else 
-		{
-			response.send('Please enter Name, Username and Password!');
-			response.end();
-		}
-	} else {
-		response.send('Please login to view this page!');
-	}	
+	var name = request.body.name
+	var username = request.body.username;
+	var password = request.body.password;
+	
+	if (username && password && name) 
+	{
+		let userobj = new Object()
+		userobj.name = name;
+		userobj.username = username;
+		userobj.password = password;
+		database.writeuserdata(userobj);
+		response.send('User created!!');
+		response.end();
+	} 
+	else 
+	{
+		response.send('Please enter Name, Username and Password!');
+		response.end();
+	}
 });
-
-app.post('/logoutuser', function(request, response) {
-	request.session.destroy();
-	response.sendFile(path.join(__dirname + '/views/index.html'));
-});
-
 
 app.post('/saveproduct', function(request, response) {
 	if (request.session.loggedin) {
 		if (saveproduct(request)) {
+			database.writeproductdata(productlist);
 			response.send('Product created!!');
 			response.end();
 		} else {
-			response.send('Please enter Procduct Name, Product Category and Picture!');
+			response.send('Please enter Procduct Name, Product Category, Picture and Picture!');
 			response.end();
 		}
 	} else {

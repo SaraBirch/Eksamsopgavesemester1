@@ -3,38 +3,30 @@
         "productname": "Mountain bike",
         "productpicture": "app.js",
         "productcategory": "Bikes",
-        "price": 400
+        "productprice": "400"
     },
     {
-        "productname":"Women bike",
+        "productname": "Women bike",
         "productpicture": "app.js",
         "productcategory": "Bikes",
-        "price": 400
-
+        "productprice": "400"
     },
     {
         "productname": "Sofa",
         "productpicture": "app.js",
         "productcategory": "Furnitures",
-        "price": 400
-
+        "productprice": "400"
     },
     {
         "productname": "Sofatable",
         "productpicture": "app.js",
         "productcategory": "Furnitures",
-        "price": 400
-    },
-    {
-        "productname": "Plant",
-        "productpicture": "app.js",
-        "productcategory": "Miscellaneous",
-        "price": 400
+        "productprice": "400"
     },
     {
         "productname": "Christmas lights",
         "productpicture": "app.js",
         "productcategory": "Miscellaneous",
-        "price": 400
+        "productprice": "400"
     }
 ]

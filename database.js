@@ -14,7 +14,7 @@ function _readuserdata() {
 
 function _writeuserdata(userobj) {
     let data = JSON.stringify(userobj, null, 2);
-    fs.appendFile(user_path, data, (err) => {
+    fs.writeFileSync(user_path, data, (err) => {
         if (err) throw err;
         console.log('Data written to file');
     });
@@ -54,6 +54,10 @@ module.exports = {
 
     readproducts : function readproducts() {
         return _readproductlist()
+    },
+
+    readuserdata : function readuserdata() {
+        return _readuserdata();
     },
 
     deleteuser : function deleteuser()

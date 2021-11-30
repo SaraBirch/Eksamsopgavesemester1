@@ -26,7 +26,7 @@
     <input type="text" id="productname" placeholder="Product name" required >
     <input type="text" id="productpicture" placeholder="billed" required >
     <input type="text" id="productcategory" placeholder="Categoty" required>
-    <input type="text" id="price" placeholder="price" required>
+    <input type="text" id="productprice" placeholder="price" required>
     <br><input id="save" type="submit" value = "Save">
 </body>
 </html>
@@ -37,9 +37,11 @@
         var productname = document.getElementById('productname').value
         var productpicture = document.getElementById('productpicture').value
         var productcategory = document.getElementById('productcategory').value
+        var productprice = document.getElementById('productprice').value
         let parameter = '?productname=' + productname
         parameter = parameter + '&productpicture=' + productpicture
         parameter  = parameter + '&productcategory=' + productcategory
+        parameter = parameter + '&productprice=' + productprice
         parameter = parameter + '&index=' + dist
 
        fetch('http://localhost:3000/updateproductwithid' + parameter, {method: 'POST'})
@@ -59,6 +61,7 @@
             document.getElementById('productname').value = product[0]
             document.getElementById('productpicture').value = product[1]
             document.getElementById('productcategory').value = product[2]
+            document.getElementById('productprice').value = product[3]
             console.log(data);
         })
     .catch(error => console.warn(error));
@@ -84,10 +87,13 @@
                 const title = row.insertCell(1);
                 const picture = row.insertCell(2);
                 const category = row.insertCell(3);
+                const price = row.insertCell(4);
+
                 id.innerHTML = index++;
                 title.innerHTML = product.productname;
                 picture.innerHTML = product.productpicture;
                 category.innerHTML = product.productcategory;
+                price.innerHTML = product.productprice;
             }
             console.log(data);
         })
