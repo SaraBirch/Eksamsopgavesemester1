@@ -1,36 +1,16 @@
 var express = require('express');
 var session = require('express-session');
-var formidable = require('formidable');
 
 
 const path = require('path');
 const { writeproductdata } = require('./database');
 const database = require('./database');
+const formData = require('express-form-data');
 
 var app = express();
 var PORT = 3000;
 var productlist = [];
 // We now need to let Express know we'll be using some of its packages:
-
-function saveproduct(request) {
-	var bSuccess = false
-	var productpicture = request.query.productpicture;
-	var productname = request.query.productname
-	var productcategory = request.query.productcategory;
-	var productprice = request.query.productprice;
-
-	if (productcategory && productname && productpicture && productprice) {
-		let productobj = new Object();
-		productobj.productname = productname;
-		productobj.productpicture = productpicture;
-		productobj.productcategory = productcategory;
-		productobj.productprice = productprice;
-		productlist.push(productobj);
-		bSuccess = true;
-	}
-	return bSuccess
-}
-
 
 app.use(session({
 	secret: 'de!"hh87€#!"787654',
@@ -45,6 +25,11 @@ app.engine('.html', require('ejs').renderFile);
 
 //serving public file
 app.use(express.static(__dirname));
+app.use('/product_pictures', express.static('product_pictures'))
+
+const options = {uploadDir : './product_pictures'}
+
+app.use(formData.parse(options));
 
 app.listen(PORT, function(err){
 	if (err) console.log(err);
@@ -53,6 +38,26 @@ app.listen(PORT, function(err){
 
 //the sessions package is what we'll use to determine if the user is logged-in, the bodyParser package will extract the form data from our login.html file.
 // We now need to display our login.html file to the client:
+
+function saveproduct(request) {
+	let { productname, productcategory, productprice} = request.body;
+	var bSuccess = false
+	var productpicture = request.files.productpicture.path;
+
+
+	if (productcategory && productname && productpicture && productprice) {
+		let productobj = new Object();
+		productobj.productname = productname;
+		productobj.productpicture = productpicture;
+		productobj.productcategory = productcategory;
+		productobj.productprice = productprice;
+		productlist.push(productobj);
+		bSuccess = true;
+	}
+	return bSuccess
+}
+
+
 
 app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/views/index.html'));
@@ -85,7 +90,6 @@ app.get('/createproduct', function(request, response) {
 	}	
 });
 
-
 app.get('/getallproducts', function(request, response) {
 	if (request.session.loggedin) {
 		productlist = database.readproducts();
@@ -117,10 +121,13 @@ app.get('/updateproductdetail', function(request, response) {
 
 app.get('/getcategorylist', function(request, response) {
 	if (request.session.loggedin) {
-		if (productlist.length == 0) { productlist = database.readproducts()}
+		if (productlist.length == 0) { 
+			productlist = database.readproducts()
+		}
+		var categorylist = productlist.map(function(a) {return a.productcategory;});
+		uniqList = [...new Set(categorylist)];
 
-		var categorylist = productlist.map(function(a) {return a.category;});
-		response.send(categorylist);
+		response.send(uniqList);
 	} else {
 		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
 	}
@@ -155,30 +162,32 @@ app.get('/logoutuser', function(request, response) {
 //check in our file to see if the details are correct.
 
 app.post('/authenticate', function(request, response) {
-		var username = request.body.username;
-		var password = request.body.password;
-		if (username && password) 
+	let {username, password} = request.body;
+
+	if (username && password) 
+	{
+		if (database.checkuserandpassword(username, password)) 
 		{
-			if (database.checkuserandpassword(username, password)) 
-			{
-				request.session.loggedin = true;
-				request.session.username = username;
-				response.redirect('/views/main.html');
-			} 
-			else 
-			{
-				response.send('Incorrect Username and/or Password!');
-			}			
-			response.end();
+			request.session.loggedin = true;
+			request.session.username = username;
+			response.redirect('/views/main.html');
 		} 
 		else 
 		{
-			response.send('Please enter Username and Password!');
-			response.end();
-		}
+			response.send('Incorrect Username and/or Password!');
+		}			
+		response.end();
+	} 
+	else 
+	{
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
 });
 
 app.post('/updateproductwithid', function(request, response) {
+	console.log(request.body)
+
 	if (request.session.loggedin) {
 		if (saveproduct(request)) {
 			var index = request.query.index;
@@ -190,15 +199,13 @@ app.post('/updateproductwithid', function(request, response) {
 			response.end();
 		}
 	} else {
-		response.sendFile(path.join(__dirname + '/views/login.html'));
+		return response.redirect(path.join(__dirname + '/views/login.html'));
 	}
 });	
 
 app.post('/saveuser', function(request, response) {
-	var name = request.body.name
-	var username = request.body.username;
-	var password = request.body.password;
-	
+	let {name, username, password} = request.body;
+
 	if (username && password && name) 
 	{
 		let userobj = new Object()
@@ -220,14 +227,14 @@ app.post('/saveproduct', function(request, response) {
 	if (request.session.loggedin) {
 		if (saveproduct(request)) {
 			database.writeproductdata(productlist);
-			response.send('Product created!!');
+			response.redirect('/views/main.html');
 			response.end();
 		} else {
 			response.send('Please enter Procduct Name, Product Category, Picture and Picture!');
 			response.end();
 		}
 	} else {
-		response.sendFile(path.join(__dirname + '/views/login.html'));
+		response.sendFile('/views/login.html');
 	}
 });	
 

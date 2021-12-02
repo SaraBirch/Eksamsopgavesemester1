@@ -16,50 +16,33 @@
         </table>
       </div>
     <div>
-    <button  id="myButton">Se product</button><br><br>
-</div>
+      <button  id="myButton">Se product</button><br><br>
+    </div>
 
 <div>
     <input id="value" type="text" name="Product number" placeholder="Product number to update" required>  <br>  
-    <br><button id="updateproduct">get product details</button>
+    <br><button id="updateproduct">Get product details</button>
 </div>
-    <input type="text" id="productname" placeholder="Product name" required >
-    <input type="text" id="productpicture" placeholder="billed" required >
-    <input type="text" id="productcategory" placeholder="Categoty" required>
-    <input type="text" id="productprice" placeholder="price" required>
-    <br><input id="save" type="submit" value = "Save">
+  <form action="/updateproductwithid" method="POST" enctype="multipart/form-data">
+    <input type="text" name="productname" id="productname" placeholder="Product name" required>
+    <input type="file" name ="productpicture" id ="productpicture" placeholder="billed" required>
+    <input type="text" name="productcategory" id="productcategory" placeholder="Categoty" required>
+    <input type="text" name="productprice" id="productprice" placeholder="Price" required>
+    <input type="hidden" name="index" id="index" value="">
+    <input type="submit" value = "Update">
+  </form>
 </body>
 </html>
 
 <script>
-  document.getElementById("save").onclick = function () {
-        var dist = document.getElementById('value').value; // change here
-        var productname = document.getElementById('productname').value
-        var productpicture = document.getElementById('productpicture').value
-        var productcategory = document.getElementById('productcategory').value
-        var productprice = document.getElementById('productprice').value
-        let parameter = '?productname=' + productname
-        parameter = parameter + '&productpicture=' + productpicture
-        parameter  = parameter + '&productcategory=' + productcategory
-        parameter = parameter + '&productprice=' + productprice
-        parameter = parameter + '&index=' + dist
-
-       fetch('http://localhost:3000/updateproductwithid' + parameter, {method: 'POST'})
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-        })
-    .catch(error => console.warn(error));
-    }
-
     document.getElementById("updateproduct").onclick = function () {
         var dist = document.getElementById('value').value; // change here
+        document.getElementById('index').value = dist;
        fetch('http://localhost:3000/updateproductdetail?value=' + dist, {method : 'GET'})
         .then((response) => response.json())
         .then((data) => {
             product = Object.values(data)
             document.getElementById('productname').value = product[0]
-            document.getElementById('productpicture').value = product[1]
             document.getElementById('productcategory').value = product[2]
             document.getElementById('productprice').value = product[3]
             console.log(data);

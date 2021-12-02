@@ -1,23 +1,5 @@
 [
     {
-        "productname": "Mountain bike",
-        "productpicture": "app.js",
-        "productcategory": "Bikes",
-        "productprice": "400"
-    },
-    {
-        "productname": "Women bike",
-        "productpicture": "app.js",
-        "productcategory": "Bikes",
-        "productprice": "400"
-    },
-    {
-        "productname": "Sofa",
-        "productpicture": "app.js",
-        "productcategory": "Furnitures",
-        "productprice": "400"
-    },
-    {
         "productname": "Sofatable",
         "productpicture": "app.js",
         "productcategory": "Furnitures",
@@ -28,5 +10,23 @@
         "productpicture": "app.js",
         "productcategory": "Miscellaneous",
         "productprice": "400"
+    },
+    {
+        "productname": "Christmas lights 2",
+        "productpicture": "/var/folders/1b/84vlbzfx2l71tcc68_lv3mpm0000gn/T/V2XkIyqYjOviK1ZZVcnnjwSV.JPG",
+        "productcategory": "Miscellaneous",
+        "productprice": "4000"
+    },
+    {
+        "productname": "Christmas lights 2",
+        "productpicture": "product_pictures/zfaTwBxfWaRwn91yJtvq3ULR.JPG",
+        "productcategory": "Miscellaneous",
+        "productprice": "400"
+    },
+    {
+        "productname": "Christmas lights 2",
+        "productpicture": "product_pictures/vd5Z5ottad61mClGhSnQL8Wf.JPG",
+        "productcategory": "Miscellaneous",
+        "productprice": "40033"
     }
 ]

@@ -1,5 +1,11 @@
 
-h1 {
+.Create-form {
+    width: 400px;
+    margin: 0 auto;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+.Create-form h1 {
     color: rgb(115, 182, 146);
     text-align: center;
     font-size: 30px;
@@ -7,18 +13,22 @@ h1 {
     
 }
 
-.buttons {
-    flex-direction: column-reverse;    
-    padding: 50px;
-    width: 400px;
-    margin: 0 auto;
-    font-family: Tahoma, Geneva, sans-serif;
-    font-size: 18px;
-    border: 3px solid #fdfdfd
-        
+.Create-form input[type="text"],
+.Create-form input[type="password"],
+.Create-form input[type="username"],
+.Create-form input[type="Email"],
+.Create-form input[type="Adresse"],
+.Create-form input[type="Age"]{
+    flex-direction: column;
+    width: 100%;
+	padding: 20px;
+	border: 1px solid #000000;
+    margin-bottom: 20px;
+	box-sizing:border-box;
+    
 }
 
-.navn {
+.Create-form input[type="submit"] {
     width: 100%;
     padding: 20px;
     background-color: rgb(235, 213, 186);
@@ -27,4 +37,10 @@ h1 {
     cursor: pointer;
     font-weight: bold;
     color: #ffffff;
+    align-items: left;
 }
+
+
+
+
+

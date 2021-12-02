@@ -2,13 +2,16 @@
 </head>
 <body>
     <div class="container">
+      <select id="productcategory" onchange="SelectedValue(this)">
+      </select>
         <table class="table" id = "myTable">
           <thead>
             <tr>
               <th>Product #</th>
               <th>Product Name</th>
-              <th>Product Picture</th>
               <th>Product Category</th>
+              <th>Product Price</th>
+              <th>Product Picture</th>
             </tr>
           </thead>
           <tbody id="data">
@@ -16,47 +19,67 @@
         </table>
       </div>
     <div>
-		<input id="value" type="text" name="Category" placeholder="Category to show" required>  <br>  
-    <button  id="myButton">Show products</button><br><br>
 </div>
 
 </body>
 </html>
 
 <script>
-    console.log('client side code running');
-    const button = document.getElementById('myButton');
-    button.addEventListener('click', function(e) {
-		var dist = document.getElementById('value').value; 
-		var url = 'http://localhost:3000/showcategory?value=' + dist;
+  function SelectedValue(sel) {
+      var value = sel.options[sel.selectedIndex].value;  
+      var url = 'http://localhost:3000/showcategory?value=' + value;
         fetch(url, {method : 'GET'})
         .then((response) => response.json())
         .then((data) => {
             var table = document.getElementById('data');
-
-			var myTable = document.getElementById("myTable");
-			var rowCount = myTable.rows.length;
-			for (var x=rowCount-1; x>0; x--) {
-				myTable.deleteRow(x);
-			}
-
-
+      			var myTable = document.getElementById("myTable");
+			      var rowCount = myTable.rows.length;
+			      for (var x=rowCount-1; x>0; x--) {
+				      myTable.deleteRow(x);
+			      }
             var index = 1;
             for (let product of Object.values(data))
             {
                 const row = table.insertRow();
                 const id = row.insertCell(0)
                 const title = row.insertCell(1);
-                const picture = row.insertCell(2);
-                const category = row.insertCell(3);
+                const category = row.insertCell(2);
+                const price = row.insertCell(3);
+                const picture = row.insertCell(4);
+
+
                 id.innerHTML = index++;
                 title.innerHTML = product.productname;
-                picture.innerHTML = product.productpicture;
                 category.innerHTML = product.productcategory;
+                price.innerHTML = product.productprice;
+                picture.innerHTML = product.productpicture;
+
             }
             console.log(data);
-        })
-    .catch(error => console.warn(error));
-    })
+        }).catch(error => console.warn(error));
+  }
+
+  function removeOptions(comboBox) {
+    while (comboBox.options.length > 0) {                
+        comboBox.remove(0);
+    }    
+  }
+  
+  var url = 'http://localhost:3000/getcategorylist';
+      fetch(url, {method : 'GET'})
+      .then((response) => response.json())
+      .then((data) => {
+        var select = document.getElementById('productcategory');
+
+        removeOptions(select);
+        for (i = 0; i < data.length; i++)
+        {
+          var opt = document.createElement('option');
+          opt.value = data[i];
+          opt.innerHTML = data[i];
+          select.appendChild(opt);      
+        }
+        console.log(data);
+    }).catch(error => console.warn(error));
 </script>
 

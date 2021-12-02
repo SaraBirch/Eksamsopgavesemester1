@@ -12,7 +12,7 @@
                 <button id="productsbycategory">Products by categoryt</button>
                 <button id="productsforsale">Products for sale</button>
                 <button id="logout" >Log out</button>
-
+                <button id="test"> test</button>
 
             </head>
 		</div>
@@ -20,6 +20,10 @@
 </html>
 
 <script type="text/javascript">
+document.getElementById("test").onclick = function() {
+    location.href = "/getcategorylist"
+}
+
     document.getElementById("updateuser").onclick = function () {
         location.href = "/updateuser";
     };
@@ -27,14 +31,14 @@
         location.href = "/deleteuser";
     };
     document.getElementById("adduser").onclick = function () {
-        location.href = "/createuser";
+        location.href = "/views/createuser.html";
     };
     document.getElementById("logout").onclick = function () {
         location.href = "/logoutuser";
     };
     document.getElementById("updateproduct").onclick = function () {
         location.href = "/views/updateproduct.html";
-    };
+    }
     document.getElementById("deleteproduct").onclick = function () {
         location.href = "/views/deleteproduct.html";
     };
