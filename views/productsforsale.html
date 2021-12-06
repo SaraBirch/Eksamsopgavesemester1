@@ -1,58 +1,31 @@
+<script src="/views/tools.js"></script>
 
-</head>
 <body>
+  <div class="container">
+    <button type="button" onclick="callMain()">Back </button><br><br>
+    <h1>Products for sale</h1>
     <div class="container">
-        <table class="table" id = "myTable">
-          <thead>
-            <tr>
-              <th>Product #</th>
-              <th>Product Name</th>
-              <th>Product Picture</th>
-              <th>Product Category</th>
-              <th>Product Price</th>
-            </tr>
-          </thead>
-          <tbody id="data">
-          </tbody>
-        </table>
-    </div>
-    <div>
-      <button  id="showproducts">Se product</button><br><br>
+      <table class="table" id="table">
+        <thead>
+          <tr>
+            <th>Product #</th>
+            <th>Product Name</th>
+            <th>Product Picture</th>
+            <th>Product Category</th>
+            <th>Product Price</th>
+          </tr>
+        </thead>
+        <tbody id="tableData">
+        </tbody>
+      </table>
     </div>
 </body>
+
 </html>
 
 <script>
-    const button = document.getElementById('showproducts');
-    button.addEventListener('click', function(e){
-        fetch('http://localhost:3000/getallproducts', {method : 'GET'})
-        .then((response) => response.json())
-        .then((data) => {
-            var table = document.getElementById('data');
-
-            var myTable = document.getElementById("myTable");
-            var rowCount = myTable.rows.length;
-            for (var x=rowCount-1; x>0; x--) {
-              myTable.deleteRow(x);
-            }
-            var index = 1;
-            for (let product of Object.values(data))
-            {
-                const row = table.insertRow();
-                const id = row.insertCell(0)
-                const title = row.insertCell(1);
-                const picture = row.insertCell(2);
-                const category = row.insertCell(3);
-                const price = row.insertCell(4);
-                id.innerHTML = index++;
-                title.innerHTML = product.productname;
-                picture.innerHTML = product.productpicture;
-                category.innerHTML = product.productcategory;
-                price.innerHTML = product.productprice;
-            }
-            console.log(data);
-        })
-    .catch(error => console.warn(error));
-    })
+  var table = document.getElementById('table');
+  var myTable = document.getElementById("tableData");
+  var url = 'http://localhost:3000/getallproducts';
+  createProductTable(table, tableData, url);
 </script>
-

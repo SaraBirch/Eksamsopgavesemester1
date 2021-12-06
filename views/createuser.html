@@ -3,20 +3,20 @@
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="../style/createuser.css"> 
-		<title>Login Form Tutorial</title>
-		
+		<title>Login Form</title>	
 	</head>
+	<script src="/views/tools.js"></script>
 	<body>
+	  <div class="container">
+		<button type="button" onclick="callMain()">Back </button><br><br>
+		<h1>Create a new user right here</h1>	
 		<div class="Create-form">
-			<h1>Opret ny bruger</h1>
 			<form action="saveuser" method="POST">
-				<input type="text" class="Create-form" name="name" placeholder="Navn" required>
-				<input type="password" class="Create-form" name="password" placeholder="Kode" required>
-				<input type="username" class="Create-form"name="username" placeholder="Brugernavn" required>
-				<input type="email" class="Create-form" name="email" placeholder="Email">
-				<input type="Adresse" class="Create-form" name="Adresse" placeholder="Adresse" required>
-				<input type="Adresse" class="Create-form" name="Age" placeholder="Alder" required>
-				<input type="submit" class="Create-form">
+				<input type="text" name="name" placeholder="Name" required>
+				<input type="password" name="password" placeholder="password" required>
+				<input type="username" name="username" placeholder="Username" required>
+				<input type="Adresse" name="Adresse" placeholder="Addresse" required>
+				<input type="submit">
 			</form>
 		</div>
 	</body>

@@ -1,62 +1,58 @@
-
 </head>
+<script src="/views/tools.js"></script>
+
 <body>
     <div class="container">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Product #</th>
-              <th>Product Name</th>
-              <th>Product Picture</th>
-              <th>Product Category</th>
-            </tr>
-          </thead>
-          <tbody id="data">
-          </tbody>
-        </table>
-      </div>
-    <div>
-    <button  id="myButton">Se product</button><br><br>
-</div>
-<div>
-    <input id="value" type="text" name="Product number" placeholder="Product number to delete" required>  <br>  
-    <button id="deleteproduct">Delete product</button>
-</div>
+        <button type="button" onclick="callMain()">Back </button><br><br>
+        <h1>Click on product to delete</h1>
+        <div class="container">
+            <table class="table" id="table">
+                <thead>
+                    <tr>
+                        <th>Product #</th>
+                        <th>Product Name</th>
+                        <th>Product Picture</th>
+                        <th>Product Category</th>
+                        <th>Product Price</th>
+                    </tr>
+                </thead>
+                <tbody id="tableData">
+                </tbody>
+            </table>
+        </div>
 </body>
+
 </html>
 
 <script>
-    document.getElementById("deleteproduct").onclick = function () {
-        var dist = document.getElementById('value').value; // change here
-        if (dist != "") {
-            location.href = "/deleteproductnumber?value=" + dist;
-        } else
-            alert('Please specify number');
-    }
 
-    console.log('client side code running');
-    const button = document.getElementById('myButton');
-    button.addEventListener('click', function(e){
-        fetch('http://localhost:3000/getallproducts', {method : 'GET'})
-        .then((response) => response.json())
-        .then((data) => {
-            var table = document.getElementById('data');
-            var index = 1;
-            for (let product of Object.values(data))
-            {
+    fetch('http://localhost:3000/getallproducts', { method: 'GET' })
+        .then(function (response) {
+            if (!response.ok) {
+                location.href = '/views/login.html'
+            } else
+                return response.json();
+        }).then((data) => {
+            var table = document.getElementById('tableData');
+            var myTable = document.getElementById("table");
+            var rowCount = myTable.rows.length;
+            for (var x = rowCount - 1; x > 0; x--) {
+                myTable.deleteRow(x);
+            }
+            let index = 1;
+            for (let product of Object.values(data)) {
                 const row = table.insertRow();
-                const id = row.insertCell(0)
+                row.onclick = function ()  { return deleteProduct(this.cells[0].innerHTML); }
+                const id = row.insertCell(0);
                 const title = row.insertCell(1);
                 const picture = row.insertCell(2);
                 const category = row.insertCell(3);
                 id.innerHTML = index++;
                 title.innerHTML = product.productname;
-                picture.innerHTML = product.productpicture;
+                picture.innerHTML = "<img src=http://localhost:3000/" + product.productpicture + " width=\"100\" height=\"100\">"
                 category.innerHTML = product.productcategory;
             }
             console.log(data);
-        })
-    .catch(error => console.warn(error));
-    })
-</script>
+        }).catch(error => console.warn(error));
 
+</script>

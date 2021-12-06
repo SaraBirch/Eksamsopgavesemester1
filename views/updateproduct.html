@@ -1,86 +1,78 @@
-
-</head>
+<script src="/views/tools.js"></script>
 <body>
-    <div class="container">
-        <table class="table" id = "myTable">
-          <thead>
-            <tr>
-              <th>Product #</th>
-              <th>Product Name</th>
-              <th>Product Picture</th>
-              <th>Product Category</th>
-            </tr>
-          </thead>
-          <tbody id="data">
-          </tbody>
-        </table>
-      </div>
-    <div>
-      <button  id="myButton">Se product</button><br><br>
-    </div>
+  <div class="container">
+    <button type="button" onclick="callMain()">Back </button><br><br>
+    <h1>Click on product to update</h1> 
 
-<div>
-    <input id="value" type="text" name="Product number" placeholder="Product number to update" required>  <br>  
-    <br><button id="updateproduct">Get product details</button>
-</div>
+    <table class="table" id="myTable">
+      <thead>
+        <tr>
+          <th>Product #</th>
+          <th>Product Name</th>
+          <th>Product Picture</th>
+          <th>Product Category</th>
+        </tr>
+      </thead>
+      <tbody id="data">
+      </tbody>
+    </table>
+    <br><br>
+  </div>
+
   <form action="/updateproductwithid" method="POST" enctype="multipart/form-data">
     <input type="text" name="productname" id="productname" placeholder="Product name" required>
-    <input type="file" name ="productpicture" id ="productpicture" placeholder="billed" required>
+    <input type="file" name="productpicture" id="productpicture" placeholder="billed" required>
     <input type="text" name="productcategory" id="productcategory" placeholder="Categoty" required>
     <input type="text" name="productprice" id="productprice" placeholder="Price" required>
-    <input type="hidden" name="index" id="index" value="">
-    <input type="submit" value = "Update">
+    <input type="submit" value="Update">
   </form>
 </body>
-</html>
 
 <script>
-    document.getElementById("updateproduct").onclick = function () {
-        var dist = document.getElementById('value').value; // change here
-        document.getElementById('index').value = dist;
-       fetch('http://localhost:3000/updateproductdetail?value=' + dist, {method : 'GET'})
-        .then((response) => response.json())
-        .then((data) => {
-            product = Object.values(data)
-            document.getElementById('productname').value = product[0]
-            document.getElementById('productcategory').value = product[2]
-            document.getElementById('productprice').value = product[3]
-            console.log(data);
-        })
-    .catch(error => console.warn(error));
-    }
 
-    console.log('client side code running');
-    const button = document.getElementById('myButton');
-    button.addEventListener('click', function(e){
-        fetch('http://localhost:3000/getallproducts', {method : 'GET'})
-        .then((response) => response.json())
-        .then((data) => {
-            var table = document.getElementById('data');
-            var myTable = document.getElementById("myTable");
-            var rowCount = myTable.rows.length;
-            for (var x=rowCount-1; x>0; x--) {
-              myTable.deleteRow(x);
-            }
-            var index = 1;
-            for (let product of Object.values(data))
-            {
-                const row = table.insertRow();
-                const id = row.insertCell(0)
-                const title = row.insertCell(1);
-                const picture = row.insertCell(2);
-                const category = row.insertCell(3);
-                const price = row.insertCell(4);
+  fetch('http://localhost:3000/getallproducts', { method: 'GET' })
+    .then(function (response) {
+      if (!response.ok) {
+        location.href = '/views/login.html'
+      } else
+        return response.json();
+    }).then((data) => {
+      var table = document.getElementById('data');
+      var myTable = document.getElementById("myTable");
+      var rowCount = myTable.rows.length;
+      for (var x = rowCount - 1; x > 0; x--) {
+        myTable.deleteRow(x);
+      }
+      let index = 1;
+      for (let product of Object.values(data)) {
+        const row = table.insertRow();
+        row.onclick = function selectProduct(id) {
+          var id = this.cells[0].innerHTML;
+          fetch('http://localhost:3000/updateproductdetail?value=' + id, { method: 'GET' })
+            .then(function (response) {
+              if (!response.ok) {
+                location.href = '/views/login.html'
+              } else
+                return response.json();
+            }).then((data) => {
+              product = Object.values(data)
+              document.getElementById('productname').value = product[0]
+              document.getElementById('productcategory').value = product[2]
+              document.getElementById('productprice').value = product[3]
+              console.log(data);
+            })
+            .catch(error => console.warn(error));
+        }
+        const id = row.insertCell(0)
+        const title = row.insertCell(1);
+        const picture = row.insertCell(2);
+        const category = row.insertCell(3);
+        id.innerHTML = index++;
+        title.innerHTML = product.productname;
+        picture.innerHTML = "<img src=http://localhost:3000/" + product.productpicture + " width=\"100\" height=\"100\">"
+        category.innerHTML = product.productcategory;
+      }
+      console.log(data);
+    }).catch(error => console.warn(error));
 
-                id.innerHTML = index++;
-                title.innerHTML = product.productname;
-                picture.innerHTML = product.productpicture;
-                category.innerHTML = product.productcategory;
-                price.innerHTML = product.productprice;
-            }
-            console.log(data);
-        })
-    .catch(error => console.warn(error));
-    })
 </script>
-

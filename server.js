@@ -27,11 +27,11 @@ app.engine('.html', require('ejs').renderFile);
 app.use(express.static(__dirname));
 app.use('/product_pictures', express.static('product_pictures'))
 
-const options = {uploadDir : './product_pictures'}
+const options = { uploadDir: './product_pictures' }
 
 app.use(formData.parse(options));
 
-app.listen(PORT, function(err){
+app.listen(PORT, function (err) {
 	if (err) console.log(err);
 	console.log("Server listening on PORT", PORT);
 });
@@ -40,7 +40,7 @@ app.listen(PORT, function(err){
 // We now need to display our login.html file to the client:
 
 function saveproduct(request) {
-	let { productname, productcategory, productprice} = request.body;
+	let { productname, productcategory, productprice } = request.body;
 	var bSuccess = false
 	var productpicture = request.files.productpicture.path;
 
@@ -59,99 +59,104 @@ function saveproduct(request) {
 
 
 
-app.get('/', function(request, response) {
+app.get('/', function (request, response) {
 	response.sendFile(path.join(__dirname + '/views/index.html'));
 });
 
-app.get('/deleteuser', function(request, response) {
+app.get('/deleteuser', function (request, response) {
 	if (request.session.loggedin) {
 		database.deleteuser();
-		response.sendFile(path.join(__dirname + '/views/index.html'));
+		response.status(404).send('/views/login.html');
 	} else {
-		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
-	}	
+		response.status(404).send('/views/login.html');
+	}
 });
 
-app.get('/updateuser', function(request, response) {
+app.get('/updateuser', function (request, response) {
 	if (request.session.loggedin) {
 		let userobj = database.readuserdata();
-		response.render(path.join(__dirname + '/views/updateuser.html'), {name : userobj.name, username: userobj.username, password : userobj.password})
+		if (userobj.length != 0)
+			response.render(path.join(__dirname + '/views/updateuser.html'), { name: userobj.name, username: userobj.username, password: userobj.password })
+		else
+			response.redirect('/views/updateuser.html');
 	} else {
-		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
-	}	
+		response.redirect('/views/login.html');
+	}
 });
 
 
-app.get('/createproduct', function(request, response) {
+app.get('/createproduct', function (request, response) {
 	if (request.session.loggedin) {
 		response.sendFile(path.join(__dirname + '/views/createproduct.html'));
 	} else {
-		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
-	}	
+		response.status(404).send('/views/login.html');
+	}
 });
 
-app.get('/getallproducts', function(request, response) {
+app.get('/getallproducts', function (request, response) {
 	if (request.session.loggedin) {
 		productlist = database.readproducts();
 		response.send(productlist);
 	} else {
-		response.sendFile(path.join(__dirname + '/views/index.html'));
-	}	
+		response.status(404).send('/views/login.html');
+	}
 });
 
-app.get('/deleteproductnumber', function(request, response) {
+app.get('/deleteproductnumber', function (request, response) {
 	if (request.session.loggedin) {
 		let number = request.query.value;
-		productlist.splice(parseInt(number)-1,1);
+		productlist.splice(parseInt(number) - 1, 1);
 		writeproductdata(productlist);
 		response.sendFile(path.join(__dirname + '/views/deleteproduct.html'));
 	} else {
-		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
-	}	
+		response.status(404).send('/views/login.html');
+	}
 });
 
-app.get('/updateproductdetail', function(request, response) {
+app.get('/updateproductdetail', function (request, response) {
 	if (request.session.loggedin) {
 		let number = request.query.value;
-		response.send(productlist[parseInt(number-1)])
+		response.send(productlist[parseInt(number - 1)])
 	} else {
-		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
-	}	
+		response.status(404).send('/views/login.html');
+	}
 });
 
-app.get('/getcategorylist', function(request, response) {
+app.get('/getcategorylist', function (request, response) {
 	if (request.session.loggedin) {
-		if (productlist.length == 0) { 
+		if (productlist.length == 0) {
 			productlist = database.readproducts()
 		}
-		var categorylist = productlist.map(function(a) {return a.productcategory;});
+		var categorylist = productlist.map(function (a) { return a.productcategory; });
 		uniqList = [...new Set(categorylist)];
 
 		response.send(uniqList);
 	} else {
-		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
+		response.status(404).send('/views/login.html');
 	}
 })
 
-app.get('/showcategory', function(request, response) {
+app.get('/showcategory', function (request, response) {
 	if (request.session.loggedin) {
 		let category = request.query.value;
-		if (productlist.length == 0) { productlist = database.readproducts()}
-		
-		let filterlist = productlist.filter( x => //x = værdi
+		if (productlist.length == 0) { productlist = database.readproducts() }
+
+		let filterlist = productlist.filter(x => //x = værdi
 			x.productcategory == category
 		);
 		response.send(filterlist);
 	} else {
-		response.sendFile(path.join(__dirname + '/views/pleaselogin.html'));
-	}	
+		response.status(404).send('/views/login.html');
+	}
 });
 
 
-app.get('/logoutuser', function(request, response) {
+app.get('/logoutuser', function (request, response) {
 	request.session.destroy();
-	response.sendFile(path.join(__dirname + '/views/index.html'));
+	response.status(404).send('/views/login.html');
 });
+
+//code from server.js
 
 // 
 
@@ -161,37 +166,34 @@ app.get('/logoutuser', function(request, response) {
 //form data will be sent to the server, and with that data our login script will 
 //check in our file to see if the details are correct.
 
-app.post('/authenticate', function(request, response) {
-	let {username, password} = request.body;
+app.post('/authenticate', function (request, response) {
+	let { username, password } = request.body;
 
-	if (username && password) 
-	{
-		if (database.checkuserandpassword(username, password)) 
-		{
+	if (username && password) {
+		if (database.checkuserandpassword(username, password)) {
 			request.session.loggedin = true;
 			request.session.username = username;
 			response.redirect('/views/main.html');
-		} 
-		else 
-		{
+		}
+		else {
 			response.send('Incorrect Username and/or Password!');
-		}			
+		}
 		response.end();
-	} 
-	else 
-	{
-		response.send('Please enter Username and Password!');
-		response.end();
+	}
+	else { // if nothing is authenticated 
+		response.status(404).send('/views/login.html');
 	}
 });
 
-app.post('/updateproductwithid', function(request, response) {
+// code from server.js
+
+app.post('/updateproductwithid', function (request, response) {
 	console.log(request.body)
 
 	if (request.session.loggedin) {
 		if (saveproduct(request)) {
 			var index = request.query.index;
-			productlist.splice(parseInt(index)-1, 1)
+			productlist.splice(parseInt(index) - 1, 1)
 			database.writeproductdata(productlist);
 			response.sendFile(path.join(__dirname + '/views/updateproduct.html'));
 		} else {
@@ -199,31 +201,29 @@ app.post('/updateproductwithid', function(request, response) {
 			response.end();
 		}
 	} else {
-		return response.redirect(path.join(__dirname + '/views/login.html'));
+		response.status(404).send('/views/login.html');
 	}
-});	
+});
 
-app.post('/saveuser', function(request, response) {
-	let {name, username, password} = request.body;
+app.post('/saveuser', function (request, response) {
+	let { name, username, password } = request.body;
 
-	if (username && password && name) 
-	{
+	if (username && password && name) {
 		let userobj = new Object()
 		userobj.name = name;
 		userobj.username = username;
 		userobj.password = password;
 		database.writeuserdata(userobj);
-		response.send('User created!!');
+		response.sendFile('/views/login.html');
 		response.end();
-	} 
-	else 
-	{
+	}
+	else {
 		response.send('Please enter Name, Username and Password!');
 		response.end();
 	}
 });
 
-app.post('/saveproduct', function(request, response) {
+app.post('/saveproduct', function (request, response) {
 	if (request.session.loggedin) {
 		if (saveproduct(request)) {
 			database.writeproductdata(productlist);
@@ -234,8 +234,8 @@ app.post('/saveproduct', function(request, response) {
 			response.end();
 		}
 	} else {
-		response.sendFile('/views/login.html');
+	response.status(404).send('/views/login.html');
 	}
-});	
+});
 
 

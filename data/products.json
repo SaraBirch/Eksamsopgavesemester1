@@ -1,32 +1,14 @@
 [
     {
-        "productname": "Sofatable",
-        "productpicture": "app.js",
-        "productcategory": "Furnitures",
+        "productname": "Christmas lights 2",
+        "productpicture": "product_pictures/Id76-VnXWIshrd--tzASN-Ni.jpeg",
+        "productcategory": "Easter",
         "productprice": "400"
     },
     {
-        "productname": "Christmas lights",
-        "productpicture": "app.js",
-        "productcategory": "Miscellaneous",
+        "productname": "Christmas lights 1",
+        "productpicture": "product_pictures/hxOYDK30NwFgiNGvjDYUDAND.jpeg",
+        "productcategory": "Xmas",
         "productprice": "400"
-    },
-    {
-        "productname": "Christmas lights 2",
-        "productpicture": "/var/folders/1b/84vlbzfx2l71tcc68_lv3mpm0000gn/T/V2XkIyqYjOviK1ZZVcnnjwSV.JPG",
-        "productcategory": "Miscellaneous",
-        "productprice": "4000"
-    },
-    {
-        "productname": "Christmas lights 2",
-        "productpicture": "product_pictures/zfaTwBxfWaRwn91yJtvq3ULR.JPG",
-        "productcategory": "Miscellaneous",
-        "productprice": "400"
-    },
-    {
-        "productname": "Christmas lights 2",
-        "productpicture": "product_pictures/vd5Z5ottad61mClGhSnQL8Wf.JPG",
-        "productcategory": "Miscellaneous",
-        "productprice": "40033"
     }
 ]

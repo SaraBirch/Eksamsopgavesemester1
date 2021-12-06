@@ -23,9 +23,6 @@ h1 {
     font-size: 55px;
     font-family: Tahoma, Geneva, sans-serif;
     background-color: rgb(240, 218, 190);
-    
-
-
 }
 
 button {
@@ -36,5 +33,4 @@ button {
     font-size: 18px;
     background-color: rgb(235, 213, 186);
     border: 3px solid #fdfdfd
-  
 }
