@@ -60,8 +60,12 @@ function saveproduct(request) {
 
 
 app.get('/', function (request, response) {
-	response.sendFile(path.join(__dirname + '/views/index.html'));
+	if (productlist.length == 0) { // read all the products
+		productlist = database.readproducts()
+	}
+	response.sendFile(path.join(__dirname + '/views/index.html')); // fronpage 
 });
+// code from server.js
 
 app.get('/deleteuser', function (request, response) {
 	if (request.session.loggedin) {
@@ -124,9 +128,7 @@ app.get('/updateproductdetail', function (request, response) {
 
 app.get('/getcategorylist', function (request, response) {
 	if (request.session.loggedin) {
-		if (productlist.length == 0) {
-			productlist = database.readproducts()
-		}
+
 		var categorylist = productlist.map(function (a) { return a.productcategory; });
 		uniqList = [...new Set(categorylist)];
 
@@ -139,8 +141,6 @@ app.get('/getcategorylist', function (request, response) {
 app.get('/showcategory', function (request, response) {
 	if (request.session.loggedin) {
 		let category = request.query.value;
-		if (productlist.length == 0) { productlist = database.readproducts() }
-
 		let filterlist = productlist.filter(x => //x = værdi
 			x.productcategory == category
 		);
@@ -153,12 +153,9 @@ app.get('/showcategory', function (request, response) {
 
 app.get('/logoutuser', function (request, response) {
 	request.session.destroy();
-	response.status(404).send('/views/login.html');
+	response.sendFile(__dirname + '/views/login.html');
 });
-
-//code from server.js
-
-// 
+// code from server.js
 
 //When the client connects to the server the login page will be displayed, the server will send the login.html file. 
 //We need to now handle the POST request, basically what happens here is when the 
@@ -180,12 +177,10 @@ app.post('/authenticate', function (request, response) {
 		}
 		response.end();
 	}
-	else { // if nothing is authenticated 
+	else {
 		response.status(404).send('/views/login.html');
 	}
 });
-
-// code from server.js
 
 app.post('/updateproductwithid', function (request, response) {
 	console.log(request.body)
@@ -206,14 +201,14 @@ app.post('/updateproductwithid', function (request, response) {
 });
 
 app.post('/saveuser', function (request, response) {
-	let { name, username, password } = request.body;
+	let { name, username, password } = request.body; //entry point called
 
-	if (username && password && name) {
+	if (username && password && name) { // checks if all cubes are filled
 		let userobj = new Object()
 		userobj.name = name;
 		userobj.username = username;
 		userobj.password = password;
-		database.writeuserdata(userobj);
+		database.writeuserdata(userobj); // saves in JSON 
 		response.sendFile('/views/login.html');
 		response.end();
 	}

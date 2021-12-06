@@ -1,14 +1,20 @@
 [
     {
+        "productname": "Christmas lights 3",
+        "productpicture": "product_pictures/lZWbP0woi--eSqdZLatfgn7u.JPG",
+        "productcategory": "Miscellaneous",
+        "productprice": "5000"
+    },
+    {
         "productname": "Christmas lights 2",
-        "productpicture": "product_pictures/Id76-VnXWIshrd--tzASN-Ni.jpeg",
-        "productcategory": "Easter",
+        "productpicture": "product_pictures/fVmSXnUUJWNDC4_GVlEXArM_.JPG",
+        "productcategory": "Miscellaneous",
         "productprice": "400"
     },
     {
-        "productname": "Christmas lights 1",
-        "productpicture": "product_pictures/hxOYDK30NwFgiNGvjDYUDAND.jpeg",
-        "productcategory": "Xmas",
-        "productprice": "400"
+        "productname": "Christmas lights 3",
+        "productpicture": "product_pictures/hLFowKAxZ8rjium0RDRqsEsF.JPG",
+        "productcategory": "Lys",
+        "productprice": "40033"
     }
 ]

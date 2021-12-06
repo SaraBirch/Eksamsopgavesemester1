@@ -5,26 +5,24 @@ const path = require('path')
 const product_path = path.join(__dirname + '/data/products.json')
 const user_path = path.join(__dirname + '/data/users.json');
 
-function _readuserdata() { // read if the data exists 
+function _readuserdata() {
     let userobj = [];
-    try { //error handeling 
+    try {
         let data = fs.readFileSync(user_path)
-        userobj = JSON.parse(data); // converts the file format to JSON format
+        userobj = JSON.parse(data);
     } catch (err) {
         console.log(err)
     }
     return userobj;
 }
-// code from database.js
 
-function _writeuserdata(userobj) { // this function converet a object to a JSON format
+function _writeuserdata(userobj) {
     let data = JSON.stringify(userobj, null, 2);
-    fs.writeFileSync(user_path, data, (err) => { // saves the data
+    fs.writeFileSync(user_path, data, (err) => {
         if (err) throw err;
         console.log('Data written to file');
     });
 }
-//code from databse.js
 
 function _writeproductdata(productlist) {
     var ts = JSON.stringify(productlist, null, 4);
