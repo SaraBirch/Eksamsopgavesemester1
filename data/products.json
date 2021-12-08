@@ -1,11 +1,5 @@
 [
     {
-        "productname": "Christmas lights 3",
-        "productpicture": "product_pictures/lZWbP0woi--eSqdZLatfgn7u.JPG",
-        "productcategory": "Miscellaneous",
-        "productprice": "5000"
-    },
-    {
         "productname": "Christmas lights 2",
         "productpicture": "product_pictures/fVmSXnUUJWNDC4_GVlEXArM_.JPG",
         "productcategory": "Miscellaneous",
@@ -16,5 +10,23 @@
         "productpicture": "product_pictures/hLFowKAxZ8rjium0RDRqsEsF.JPG",
         "productcategory": "Lys",
         "productprice": "40033"
+    },
+    {
+        "productname": "Plant",
+        "productpicture": "product_pictures/s_zfjM51kKQNSEkHfRsCz0bT.jpeg",
+        "productcategory": "Plants",
+        "productprice": "30"
+    },
+    {
+        "productname": "A small plant",
+        "productpicture": "product_pictures/MQUwYjadyI1PhQ8T5Ow0TJ2W.jpeg",
+        "productcategory": "Plants",
+        "productprice": "50"
+    },
+    {
+        "productname": "A large green plant",
+        "productpicture": "product_pictures/9WP2Ctc55JCHiXOdPsJS-faR.jpeg",
+        "productcategory": "Plants",
+        "productprice": "170"
     }
 ]

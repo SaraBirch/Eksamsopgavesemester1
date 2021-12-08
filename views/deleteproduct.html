@@ -1,6 +1,6 @@
 </head>
 <script src="/views/tools.js"></script>
-
+<link rel="stylesheet" href="../style/deleteproduct.css"> 
 <body>
     <div class="container">
         <button type="button" onclick="callMain()">Back </button><br><br>
@@ -47,10 +47,12 @@
                 const title = row.insertCell(1);
                 const picture = row.insertCell(2);
                 const category = row.insertCell(3);
+                const price = row.insertCell(4);
                 id.innerHTML = index++;
                 title.innerHTML = product.productname;
                 picture.innerHTML = "<img src=http://localhost:3000/" + product.productpicture + " width=\"100\" height=\"100\">"
                 category.innerHTML = product.productcategory;
+                price.innerHTML = product.productprice;
             }
             console.log(data);
         }).catch(error => console.warn(error));

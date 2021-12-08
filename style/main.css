@@ -1,15 +1,8 @@
 h1 {
     color: rgb(115, 182, 146);
     text-align: center;
-    font-size: 30px;
+    font-size: 40px;
     font-family: Tahoma, Geneva, sans-serif; 
+    background-color: rgb(240, 218, 190);
 }
 
-button {
-    justify-content: center;
-    width: 30%;
-	padding: 20px;
-	border: 1px solid #070404;
-	margin-bottom: 20px;
-	box-sizing:border-box;
-}

@@ -31,10 +31,12 @@ const options = { uploadDir: './product_pictures' }
 
 app.use(formData.parse(options));
 
-app.listen(PORT, function (err) {
+server = app.listen(PORT, function (err) {
 	if (err) console.log(err);
 	console.log("Server listening on PORT", PORT);
 });
+
+module.exports = server;
 
 //the sessions package is what we'll use to determine if the user is logged-in, the bodyParser package will extract the form data from our login.html file.
 // We now need to display our login.html file to the client:
@@ -63,7 +65,7 @@ app.get('/', function (request, response) {
 	if (productlist.length == 0) { // read all the products
 		productlist = database.readproducts()
 	}
-	response.sendFile(path.join(__dirname + '/views/index.html')); // fronpage 
+	response.sendFile(path.join(__dirname + '/views/index.html')); // frontpage 
 });
 // code from server.js
 
@@ -96,6 +98,7 @@ app.get('/createproduct', function (request, response) {
 		response.status(404).send('/views/login.html');
 	}
 });
+// code from server.js
 
 app.get('/getallproducts', function (request, response) {
 	if (request.session.loggedin) {
@@ -116,6 +119,7 @@ app.get('/deleteproductnumber', function (request, response) {
 		response.status(404).send('/views/login.html');
 	}
 });
+// code from server.js
 
 app.get('/updateproductdetail', function (request, response) {
 	if (request.session.loggedin) {
@@ -125,6 +129,7 @@ app.get('/updateproductdetail', function (request, response) {
 		response.status(404).send('/views/login.html');
 	}
 });
+// code from server.js
 
 app.get('/getcategorylist', function (request, response) {
 	if (request.session.loggedin) {
@@ -138,6 +143,8 @@ app.get('/getcategorylist', function (request, response) {
 	}
 })
 
+// code from server.js
+
 app.get('/showcategory', function (request, response) {
 	if (request.session.loggedin) {
 		let category = request.query.value;
@@ -149,13 +156,12 @@ app.get('/showcategory', function (request, response) {
 		response.status(404).send('/views/login.html');
 	}
 });
-
+// code from server.js
 
 app.get('/logoutuser', function (request, response) {
 	request.session.destroy();
 	response.sendFile(__dirname + '/views/login.html');
 });
-// code from server.js
 
 //When the client connects to the server the login page will be displayed, the server will send the login.html file. 
 //We need to now handle the POST request, basically what happens here is when the 
@@ -173,7 +179,7 @@ app.post('/authenticate', function (request, response) {
 			response.redirect('/views/main.html');
 		}
 		else {
-			response.send('Incorrect Username and/or Password!');
+			response.status(404).send('Incorrect Username and/or Password!');
 		}
 		response.end();
 	}
@@ -199,6 +205,7 @@ app.post('/updateproductwithid', function (request, response) {
 		response.status(404).send('/views/login.html');
 	}
 });
+// code from server.js
 
 app.post('/saveuser', function (request, response) {
 	let { name, username, password } = request.body; //entry point called
@@ -218,6 +225,7 @@ app.post('/saveuser', function (request, response) {
 	}
 });
 
+
 app.post('/saveproduct', function (request, response) {
 	if (request.session.loggedin) {
 		if (saveproduct(request)) {
@@ -232,5 +240,6 @@ app.post('/saveproduct', function (request, response) {
 	response.status(404).send('/views/login.html');
 	}
 });
+// code from server.js
 
 

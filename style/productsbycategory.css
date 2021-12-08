@@ -1,0 +1,14 @@
+h1 {
+    color: rgb(115, 182, 146);
+    text-align: center;
+    font-size: 30px;
+    font-family: Tahoma, Geneva, sans-serif;
+    
+}
+
+.container {
+    width: 400px;
+    margin: 0 auto;
+    font-family: Tahoma, Geneva, sans-serif;
+    
+}
